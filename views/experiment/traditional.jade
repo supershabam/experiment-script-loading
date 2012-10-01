@@ -1,0 +1,21 @@
+extends ../experiment
+
+block scripts
+  script(src='/javascript/generate?message=first non-async non-defer with no delay&delay=0')
+  script(src='/javascript/generate?message=second non-async non-defer with long delay&delay=2500')
+  script(src='/javascript/generate?message=third non-async non-defer with no delay&delay=0')
+  script(src='/javascript/generate?message=last non-async non-defer with long delay&delay=2500')
+
+block setup
+  h3 traditional scripts in head
+  pre.
+    scripts are loaded in the head
+    no defer or async attributes
+    server simulates lag in downloading scripts
+
+block conclusion
+  h3 page feels slow
+  p The html cannot load until after all the javascript files have loaded.
+
+  h3 scripts load in order
+  p This is easy to comprehend. It's nice when scripts execute in the order you specify.

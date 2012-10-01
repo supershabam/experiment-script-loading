@@ -1,0 +1,74 @@
+doctype 5
+html
+  head
+    title supershabam
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script
+      // shim console.log for our purposes
+      (function(window, document) {
+        'use strict';
+
+        var _log
+          , nop = function() {}
+          , queue = []
+          , ready = false
+          , readyStateCheckInterval
+          , flush
+          ;
+
+        // write queue to pre element
+        flush = function() {
+          var el
+            , args
+            , line
+            , j
+            , i
+            ;
+
+          el = document.getElementById('log');
+
+          for (i = 0; i < queue.length; ++i) {
+            line = [];
+            for (j = 0; j < queue[i].length; ++j) {
+              line.push(String(queue[i][j]));
+            }
+            line = line.join('\t');
+            el.innerHTML = el.innerHTML + line + '\n';
+          }
+
+          queue = [];
+        };
+
+        // shim console.log
+        window.console = window.console || {};
+        window.console.log = window.console.log || nop;
+        _log = window.console.log;
+        window.console.log = function() {
+          _log.apply(window.console, arguments);
+
+          queue.push(arguments);
+          if (ready) flush();
+        };
+
+        // poll for doc ready so we can start using the dom
+        readyStateCheckInterval = setInterval(function pollReadyState() {
+          if (document.readyState === 'complete') {
+            flush();
+            ready = true;
+            clearInterval(readyStateCheckInterval);
+          }
+        }, 10);
+      })(window, document);
+    block scripts
+  body
+    h1=(new Date())
+    p when the time is updated above, your html has loaded
+    pre(id='log')
+    
+    hr
+    h2 setup
+    block setup
+    
+    hr
+    h2 conclusion
+    block conclusion

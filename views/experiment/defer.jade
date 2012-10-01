@@ -1,0 +1,24 @@
+extends ../experiment
+
+block scripts
+  script(src='/javascript/generate?message=first with zero delay', defer)
+  script(src='/javascript/generate?message=second with longest delay&delay=2000', defer)
+  script(src='/javascript/generate?message=third with short delay&delay=500', defer)
+  script(src='/javascript/generate?message=last with no delay', defer)
+
+block setup
+  h3 traditional scripts in head all with async attribute
+  pre.
+    scripts are loaded in the head
+    defer attributes
+    server simulates lag in downloading scripts
+
+block conclusion
+  h3.pro page feels speedy
+  p The html loads without waiting for the javascript
+
+  h3.con page is altered after load
+  p Since the javascript is loading alongside the page, if you're altering the page in javascript it can seem jerky if you have bad load times.
+
+  h3.pro scripts load in order
+  p This is easy to comprehend. It's nice when scripts execute in the order you specify.

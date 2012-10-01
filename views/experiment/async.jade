@@ -1,0 +1,24 @@
+extends ../experiment
+
+block scripts
+  script(src='/javascript/generate?message=first with no delay', async)
+  script(src='/javascript/generate?message=second with longest delay&delay=1000', async)
+  script(src='/javascript/generate?message=third with short delay&delay=250', async)
+  script(src='/javascript/generate?message=last with no delay', async)
+
+block setup
+  h3 traditional scripts in head all with async attribute
+  pre.
+    scripts are loaded in the head
+    async attributes
+    server simulates lag in downloading scripts
+
+block conclusion
+  h3 page feels speedy
+  p The html loads without waiting for the javascript
+
+  h3 page is altered after load
+  p Since the javascript is loading alongside the page, if you're altering the page in javascript it can seem jerky if you have bad load times.
+
+  h3 scripts load in no order
+  p This is difficult to program for. You cannot rely on ANY order once you specify the async attribute. Refresh the page and see that the "first" and "last" scripts will come in different orders.

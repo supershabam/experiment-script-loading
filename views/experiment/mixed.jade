@@ -1,0 +1,32 @@
+extends ../experiment
+
+block scripts
+  script(src='/javascript/generate?message=first traditional with small delay&delay=500')
+  script(src='/javascript/generate?message=first async with zero delay', async)
+  script(src='/javascript/generate?message=first defer with zero delay', defer)
+  script(src='/javascript/generate?message=second async with longest delay&delay=2000', async)
+  script(src='/javascript/generate?message=second defer with longest delay&delay=2000', defer)
+  script(src='/javascript/generate?message=third async with short delay&delay=500', async)
+  script(src='/javascript/generate?message=third defer with short delay&delay=500', defer)
+  script(src='/javascript/generate?message=last async with no delay', async)
+  script(src='/javascript/generate?message=last defer with no delay', defer)
+  script(src='/javascript/generate?message=last traditional with large delay&delay=2000')
+
+block setup
+  h3 traditional scripts in head using defer, async, and no special loading
+  pre.
+    scripts are loaded in the head
+    some are async
+    some are defer
+    some are normal
+    server simulates lag in downloading scripts
+
+block conclusion
+  h3 page feels slow
+  p The html cannot load until after all the traditional javascript files have loaded.
+
+  h3 some scripts load in order
+  p All the traditional scripts execute in-order, and then all the defer scripts execute in-order. The async scripts interleave their execution inbetween the traditional and defer loading.
+
+  h3 async scripts wait for traditional scripts before them
+  p Note how "first async with zero delay" comes after the traditional with a small delay. This means that if you list a script before an async script (that isn't itself async or defer), then the async script will wait for it. This is good news for loading libraries that later scripts rely on.
